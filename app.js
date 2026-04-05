@@ -82,17 +82,16 @@
     const navDrinks = document.getElementById('nav-drinks');
 
     navFood.innerHTML = MENU_DATA.food.map(s =>
-      `<a href="#${s.id}" data-section="${s.id}">${s.name[currentLang] || s.name.mk}</a>`
+      `<a data-section="${s.id}">${s.name[currentLang] || s.name.mk}</a>`
     ).join('');
 
     navDrinks.innerHTML = MENU_DATA.drinks.map(s =>
-      `<a href="#${s.id}" data-section="${s.id}">${s.name[currentLang] || s.name.mk}</a>`
+      `<a data-section="${s.id}">${s.name[currentLang] || s.name.mk}</a>`
     ).join('');
 
     // Scroll to section without setting hash in the URL
     document.querySelectorAll('.nav-scroll a').forEach(a => {
-      a.addEventListener('click', e => {
-        e.preventDefault();
+      a.addEventListener('click', () => {
         const target = document.getElementById(a.getAttribute('data-section'));
         if (target) target.scrollIntoView({ behavior: 'smooth' });
       });
