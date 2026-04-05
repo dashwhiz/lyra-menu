@@ -169,9 +169,12 @@
     scrollHandler = () => {
       const links = document.querySelectorAll('.nav-scroll a');
 
-      // Scrolled to top — clear all active pills
+      // Scrolled to top — clear all active pills and remove hash from URL
       if (window.scrollY < 150) {
         links.forEach(a => a.classList.remove('active'));
+        if (window.location.hash) {
+          history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
         return;
       }
 
@@ -189,6 +192,9 @@
 
       if (!currentId) {
         links.forEach(a => a.classList.remove('active'));
+        if (window.location.hash) {
+          history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
         return;
       }
 
@@ -197,6 +203,11 @@
       }
       if (drinkIds().includes(currentId) && currentCategory !== 'drinks') {
         setCategory('drinks');
+      }
+
+      // Keep URL hash in sync with the visible section
+      if (window.location.hash !== '#' + currentId) {
+        history.replaceState(null, '', '#' + currentId);
       }
 
       links.forEach(a => {
