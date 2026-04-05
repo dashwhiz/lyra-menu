@@ -89,6 +89,15 @@
       `<a href="#${s.id}" data-section="${s.id}">${s.name[currentLang] || s.name.mk}</a>`
     ).join('');
 
+    // Scroll to section without setting hash in the URL
+    document.querySelectorAll('.nav-scroll a').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.getElementById(a.getAttribute('data-section'));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
     // Update category button labels
     document.getElementById('cat-food').textContent = CATEGORY_LABELS.food[currentLang];
     document.getElementById('cat-drinks').textContent = CATEGORY_LABELS.drinks[currentLang];
@@ -205,18 +214,17 @@
         setCategory('drinks');
       }
 
-      // Keep URL hash in sync with the visible section
-      if (window.location.hash !== '#' + currentId) {
-        history.replaceState(null, '', '#' + currentId);
-      }
-
       links.forEach(a => {
         a.classList.toggle('active', a.getAttribute('data-section') === currentId);
       });
 
       const activeLink = document.querySelector('.nav-scroll a.active');
       if (activeLink) {
-        activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        const container = activeLink.closest('.nav-scroll');
+        if (container) {
+          const left = activeLink.offsetLeft - container.offsetWidth / 2 + activeLink.offsetWidth / 2;
+          container.scrollTo({ left, behavior: 'smooth' });
+        }
       }
     };
 
@@ -239,6 +247,12 @@
   // ── INIT ─────────────────────────────────────────────────
 
   function init() {
+    // Always start at the top — strip any leftover hash so refresh never jumps
+    if (window.location.hash) {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+    window.scrollTo(0, 0);
+
     document.getElementById('cat-food').addEventListener('click', () => {
       setCategory('food');
       window.scrollTo({ top: 0, behavior: 'smooth' });
