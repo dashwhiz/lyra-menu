@@ -177,12 +177,9 @@
     scrollHandler = () => {
       const links = document.querySelectorAll('.nav-scroll a');
 
-      // Scrolled to top — clear all active pills and remove hash from URL
+      // Scrolled to top — clear all active pills
       if (window.scrollY < 150) {
         links.forEach(a => a.classList.remove('active'));
-        if (window.location.hash) {
-          history.replaceState(null, '', window.location.pathname + window.location.search);
-        }
         return;
       }
 
@@ -200,9 +197,6 @@
 
       if (!currentId) {
         links.forEach(a => a.classList.remove('active'));
-        if (window.location.hash) {
-          history.replaceState(null, '', window.location.pathname + window.location.search);
-        }
         return;
       }
 
@@ -246,10 +240,6 @@
   // ── INIT ─────────────────────────────────────────────────
 
   function init() {
-    // Always start at the top — strip any leftover hash so refresh never jumps
-    if (window.location.hash) {
-      history.replaceState(null, '', window.location.pathname + window.location.search);
-    }
     window.scrollTo(0, 0);
 
     document.getElementById('cat-food').addEventListener('click', () => {

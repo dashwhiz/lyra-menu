@@ -85,6 +85,11 @@
   }
 }
 </script>
+<script>
+  // Strip hash before anything else so the browser never scrolls to an anchor
+  if (window.location.hash) history.replaceState(null, '', window.location.pathname + window.location.search);
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+</script>
 <script src="menu-data.js"></script>
 <script src="app.js"></script>
 </body>
