@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lyra Menu | Restaurant Lyra Skopje</title>
+  <meta name="description" content="Лира е ресторан во Скопје основан во 1996 година. Огромен избор на јадења од македонска кујна, скара, специјалитети, риби, вина и пијалоци. Lyra is a restaurant in Skopje, Macedonia, serving traditional Macedonian cuisine since 1996.">
+  <meta name="theme-color" content="#1a1118">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="btn-mk">MK</button>
+    <button class="lang-btn" id="btn-en">EN</button>
+  </div>
+  <img class="logo-img" src="assets/logo.png" alt="Restaurant Lyra — Est. 1996">
+</header>
+
+<div class="nav-wrapper">
+  <div class="nav-cats">
+    <button class="nav-cat active" id="cat-food">Храна</button>
+    <button class="nav-cat" id="cat-drinks">Пијалоци</button>
+  </div>
+  <div class="nav-scroll" id="nav-food"></div>
+  <div class="allergen-legend" id="allergen-legend"></div>
+  <div class="nav-scroll" id="nav-drinks" style="display:none"></div>
+</div>
+
+<main id="menu-content"></main>
+
+<footer>
+  <img class="footer-logo" src="assets/logo.png" alt="Lyra">
+  <div class="footer-name" id="footer-name">Ресторан Лира</div>
+  <div class="footer-sub" id="footer-sub">Скопје &middot; Основан 1996</div>
+</footer>
+
+<button id="back-to-top" aria-label="Back to top">&uarr;</button>
+
+<script src="menu-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
