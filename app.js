@@ -167,6 +167,14 @@
     if (scrollHandler) window.removeEventListener('scroll', scrollHandler);
 
     scrollHandler = () => {
+      const links = document.querySelectorAll('.nav-scroll a');
+
+      // Scrolled to top — clear all active pills
+      if (window.scrollY < 150) {
+        links.forEach(a => a.classList.remove('active'));
+        return;
+      }
+
       const sections = document.querySelectorAll('.menu-section');
       const threshold = window.innerHeight * 0.4;
       let currentId = null;
@@ -178,8 +186,6 @@
           currentId = section.id;
         }
       }
-
-      const links = document.querySelectorAll('.nav-scroll a');
 
       if (!currentId) {
         links.forEach(a => a.classList.remove('active'));
