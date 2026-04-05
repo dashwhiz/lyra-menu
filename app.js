@@ -60,9 +60,10 @@
 
     return `<section class="menu-section" id="${section.id}">
       <h2>${title}</h2>
-      <div class="section-line"></div>
       ${note}
-      ${items}
+      <div class="section-card">
+        ${items}
+      </div>
     </section>`;
   }
 
@@ -143,6 +144,7 @@
 
     document.getElementById('btn-mk').classList.toggle('active', lang === 'mk');
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.querySelector('.lang-toggle').classList.toggle('lang-en', lang === 'en');
 
     renderMenu();
     renderNav();
