@@ -161,30 +161,30 @@
 
   // ── SCROLL OBSERVER ──────────────────────────────────────
 
-  let observer = null;
+  let scrollHandler = null;
 
   function setupObserver() {
-    if (observer) observer.disconnect();
+    if (scrollHandler) window.removeEventListener('scroll', scrollHandler);
 
-    const sections = document.querySelectorAll('.menu-section');
-    const visibleSections = new Set();
+    scrollHandler = () => {
+      const sections = document.querySelectorAll('.menu-section');
+      const threshold = window.innerHeight * 0.4;
+      let currentId = null;
 
-    observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          visibleSections.add(entry.target.id);
-        } else {
-          visibleSections.delete(entry.target.id);
+      for (const section of sections) {
+        if (section.style.display === 'none') continue;
+        const rect = section.getBoundingClientRect();
+        if (rect.top < threshold && rect.bottom > 0) {
+          currentId = section.id;
         }
-      });
-
-      if (visibleSections.size === 0) {
-        document.querySelectorAll('.nav-scroll a').forEach(a => a.classList.remove('active'));
-        return;
       }
 
-      // Use the last intersecting entry that is visible
-      const currentId = [...visibleSections].pop();
+      const links = document.querySelectorAll('.nav-scroll a');
+
+      if (!currentId) {
+        links.forEach(a => a.classList.remove('active'));
+        return;
+      }
 
       if (foodIds().includes(currentId) && currentCategory !== 'food') {
         setCategory('food');
@@ -193,7 +193,7 @@
         setCategory('drinks');
       }
 
-      document.querySelectorAll('.nav-scroll a').forEach(a => {
+      links.forEach(a => {
         a.classList.toggle('active', a.getAttribute('data-section') === currentId);
       });
 
@@ -201,9 +201,9 @@
       if (activeLink) {
         activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       }
-    }, { rootMargin: '-35% 0px -60% 0px' });
+    };
 
-    sections.forEach(s => observer.observe(s));
+    window.addEventListener('scroll', scrollHandler, { passive: true });
   }
 
   // ── BACK TO TOP ──────────────────────────────────────────
