@@ -167,27 +167,40 @@
     if (observer) observer.disconnect();
 
     const sections = document.querySelectorAll('.menu-section');
+    const visibleSections = new Set();
+
     observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        const id = entry.target.id;
-
-        if (foodIds().includes(id) && currentCategory !== 'food') {
-          setCategory('food');
-        }
-        if (drinkIds().includes(id) && currentCategory !== 'drinks') {
-          setCategory('drinks');
-        }
-
-        document.querySelectorAll('.nav-scroll a').forEach(a => {
-          a.classList.toggle('active', a.getAttribute('data-section') === id);
-        });
-
-        const activeLink = document.querySelector('.nav-scroll a.active');
-        if (activeLink) {
-          activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        if (entry.isIntersecting) {
+          visibleSections.add(entry.target.id);
+        } else {
+          visibleSections.delete(entry.target.id);
         }
       });
+
+      if (visibleSections.size === 0) {
+        document.querySelectorAll('.nav-scroll a').forEach(a => a.classList.remove('active'));
+        return;
+      }
+
+      // Use the last intersecting entry that is visible
+      const currentId = [...visibleSections].pop();
+
+      if (foodIds().includes(currentId) && currentCategory !== 'food') {
+        setCategory('food');
+      }
+      if (drinkIds().includes(currentId) && currentCategory !== 'drinks') {
+        setCategory('drinks');
+      }
+
+      document.querySelectorAll('.nav-scroll a').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('data-section') === currentId);
+      });
+
+      const activeLink = document.querySelector('.nav-scroll a.active');
+      if (activeLink) {
+        activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
     }, { rootMargin: '-35% 0px -60% 0px' });
 
     sections.forEach(s => observer.observe(s));
