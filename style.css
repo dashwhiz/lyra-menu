@@ -33,7 +33,7 @@ body {
 /* ── HEADER ───────────────────────────────────────────────── */
 header {
   text-align: center;
-  padding: 40px 24px 28px;
+  padding: calc(40px + env(safe-area-inset-top)) 24px 28px;
   background: var(--bg);
   position: relative;
 }
